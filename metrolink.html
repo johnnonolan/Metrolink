@@ -7,19 +7,23 @@
       body { height: 100%; margin: 0; padding: 0 }
       #map_canvas { height: 100% }
     </style>
-    <script>
-    
-var traffordbarcoords = {lat:53.46197,long:-2.2768};
-var oldtraffordcoords = {lat:53.456512,long:-2.285074};
-var stretfordcoords = {lat:53.460766,long:-2.342491};
-var daneroadcoords = {lat:53.43031,long:-2.31139};
-console.log('x=',traffordbarcoords);
-console.log('y=',oldtraffordcoords);
-console.log('z=',stretfordcoords);
 
-var a = [traffordbarcoords,oldtraffordcoords,stretfordcoords];
-a.forEach(function(element,index,array){console.log(":"+element.lat)});
-</script>
+    
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCh77LqDDzuS3BezmoWbXY7RtHxLkxNhrU&sensor=true">
+    </script>
+    <script type="text/javascript">
+		var traffordbarcoords = {lat:53.46197,long:-2.2768};
+		var oldtraffordcoords = {lat:53.456512,long:-2.285074};
+		var stretfordcoords = {lat:53.460766,long:-2.342491};
+	var daneroadcoords = {lat:53.43031,long:-2.31139};
+		console.log('x=',traffordbarcoords);
+		console.log('y=',oldtraffordcoords);
+	console.log('z=',stretfordcoords);
+
+	var a = [traffordbarcoords,oldtraffordcoords,stretfordcoords];
+		a.forEach(function(element,index,array){console.log(":"+element.lat)});
+
 
     <script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCh77LqDDzuS3BezmoWbXY7RtHxLkxNhrU&sensor=true">
@@ -27,25 +31,46 @@ a.forEach(function(element,index,array){console.log(":"+element.lat)});
     <script type="text/javascript">
 	  var map;
       function initialize() {
-        var myOptions = {
-          center: new google.maps.LatLng(53.45612, -2.265074),
-          zoom: 15,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
+		if (navigator.geolocation) {
+  			navigator.geolocation.getCurrentPosition(success, error);
+		} else {
+  			error('not supported');
+		}
+	
+
+       
       }
 
 	function closestStation(coords)
 	{
 
 		var traffordbarcoords = {lat:53.46197,long:-2.2768};
-		var darwin = new google.maps.LatLng(traffordbarcoords.lat,traffordbarcoords.long);
+		var latlng = new google.maps.LatLng(traffordbarcoords.lat,traffordbarcoords.long);
         
-        map.setCenter(darwin);
+        map.setCenter(latlng);
 		return;
 	}
 	var distance = function(x,y){return Math.sqrt(Math.pow((x.lat -y.lat),2)  +Math.pow((x.long- y.long),2))}
-   
+ 	
+	function success(position){
+		var myOptions = {	
+          center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+          zoom: 15,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }; 
+		map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
+	}
+    
+
+function error(msg) {
+//  var s = document.querySelector('#status');
+//  s.innerHTML = typeof msg == 'string' ? msg : "failed";
+//  s.className = 'fail';
+  
+   console.log(msg);
+}
+
+	
 
     </script>
   </head>
