@@ -7,26 +7,28 @@
       body { height: 100%; margin: 0; padding: 0 }
       #map_canvas { height: 100% }
     </style>
-
     
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCh77LqDDzuS3BezmoWbXY7RtHxLkxNhrU&sensor=true" />
-    <script type="text/javascript">
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCh77LqDDzuS3BezmoWbXY7RtHxLkxNhrU&sensor=true"></script>
+    <script>
+           
+
 		var traffordbarcoords = {lat:53.46197,long:-2.2768};
 		var oldtraffordcoords = {lat:53.456512,long:-2.285074};
 		var stretfordcoords = {lat:53.460766,long:-2.342491};
-	var daneroadcoords = {lat:53.43031,long:-2.31139};
-		console.log('x=',traffordbarcoords);
-		console.log('y=',oldtraffordcoords);
-	console.log('z=',stretfordcoords);
+		var daneroadcoords =  {lat:53.43031,long:-2.31139};
+		var salecoords = {lat:53.424238651575145, long:-2.3191452026367188};
+		var brooklandscoords = {lat:53.41738463746824, long:-2.325882911682129};
+		var timperleycoords = {lat:53.40399, long:	-2.33869};	
+		var navigationroadcoords = {lat:53.39525500112424,long:-2.3433494567871094};
+	    var altrinchamcoords = {lat:53.39525500112424,long:	-2.3433494567871094};
 
-	var a = [traffordbarcoords,oldtraffordcoords,stretfordcoords];
+
+	    var a = [traffordbarcoords,oldtraffordcoords,stretfordcoords,
+			 daneroadcoords,salecoords,brooklandscoords,
+			 timperleycoords,navigationroadcoords,altrinchamcoords];
 		a.forEach(function(element,index,array){console.log(":"+element.lat)});
 
 
-    <script type="text/javascript"
-      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCh77LqDDzuS3BezmoWbXY7RtHxLkxNhrU&sensor=true">
-    </script>
-    <script type="text/javascript">
 	  var map;
       function initialize() {
 		if (navigator.geolocation) {
@@ -68,13 +70,15 @@ function error(msg) {
    console.log(msg);
 }
 
+
 	
 
     </script>
+
   </head>
   <body onload="initialize()">
     <div id="map_canvas" style="width:90%; height:90%"></div>
-    <input type="button" onclick="closestStation();">Nearest Station</input>
+    <input type="button" onclick="closestStation();" value="Nearest Station"></input>
   </body>
 </html>
 
