@@ -9,9 +9,7 @@
     </style>
     
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCh77LqDDzuS3BezmoWbXY7RtHxLkxNhrU&sensor=true"></script>
-    <script>
-           
-
+    <script>           
 		var traffordbarcoords = {lat:53.46197,long:-2.2768};
 		var oldtraffordcoords = {lat:53.456512,long:-2.285074};
 		var stretfordcoords = {lat:53.460766,long:-2.342491};
@@ -23,62 +21,85 @@
 	    var altrinchamcoords = {lat:53.39525500112424,long:	-2.3433494567871094};
 
 
-	    var a = [traffordbarcoords,oldtraffordcoords,stretfordcoords,
+		var a = [traffordbarcoords,oldtraffordcoords,stretfordcoords,
 			 daneroadcoords,salecoords,brooklandscoords,
 			 timperleycoords,navigationroadcoords,altrinchamcoords];
-		a.forEach(function(element,index,array){console.log(":"+element.lat)});
 
 
-	  var map;
-      function initialize() {
-		if (navigator.geolocation) {
-  			navigator.geolocation.getCurrentPosition(success, error);
-		} else {
-  			error('not supported');
+		var map;
+		function initialize() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(success, error);
+			} else {	
+				error('not supported');
+			}	      
 		}
+		var distance = function(x,y){return Math.sqrt(Math.pow((x.lat -y.lat),2)  +Math.pow((x.long- y.long),2))}
 	
+		function findMetStop(){
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(closestStation, error);
+			} else {	
+				error('not supported');
+			}	      		
+		}
 
-       
-      }
+		function closestStation(coords){
 
-	function closestStation(coords)
-	{
+		    var myPos = {lat:coords.coords.latitude,long:coords.coords.longitude};
+			var myDist = distance(myPos,a[1]);
+			var myNearestStation = a[1]
+			
+			for (var i=0; i<a.length; i++) {
+				console.log(distance(myPos,a[i]));
+				if(distance(myPos,a[i]) <= myDist){
+					myDist = distance(myPos,a[i]);
+					myNearestStation = a[i];
+					console.log("changing");
+				}			
+			}
+			var myOptions = {	
+			  center: new google.maps.LatLng( myNearestStation.lat, myNearestStation.long),
+			  zoom: 15,
+			  mapTypeId: google.maps.MapTypeId.ROADMAP
+			}; 
+			map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
+			
+			var traffordbarcoords = {lat:53.46197,long:-2.2768};
+			var latlng = new google.maps.LatLng(traffordbarcoords.lat,traffordbarcoords.long);        
+			map.setCenter(latlng);
+			return;
+		}
+		
+		function success(position){
+			var myOptions = {	
+			  center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+			  zoom: 15,
+			  mapTypeId: google.maps.MapTypeId.ROADMAP
+			}; 
+			map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
+		}
 
-		var traffordbarcoords = {lat:53.46197,long:-2.2768};
-		var latlng = new google.maps.LatLng(traffordbarcoords.lat,traffordbarcoords.long);
-        
-        map.setCenter(latlng);
-		return;
-	}
-	var distance = function(x,y){return Math.sqrt(Math.pow((x.lat -y.lat),2)  +Math.pow((x.long- y.long),2))}
- 	
-	function success(position){
-		var myOptions = {	
-          center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-          zoom: 15,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }; 
-		map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
-	}
-    
-
-function error(msg) {
-//  var s = document.querySelector('#status');
-//  s.innerHTML = typeof msg == 'string' ? msg : "failed";
-//  s.className = 'fail';
-  
-   console.log(msg);
-}
-
-
-	
-
+		
+		function getCurrentLocation(){
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(success, error);
+			} else {	
+				error('not supported');
+			}	      		
+		}
+		
+		function error(msg) {
+			//  var s = document.querySelector('#status');
+			//  s.innerHTML = typeof msg == 'string' ? msg : "failed";
+			//  s.className = 'fail';
+			console.log(msg);
+		}
     </script>
-
   </head>
   <body onload="initialize()">
     <div id="map_canvas" style="width:90%; height:90%"></div>
-    <input type="button" onclick="closestStation();" value="Nearest Station"></input>
+    <input type="button" onclick="findMetStop();" value="Nearest Station"></input>
   </body>
 </html>
 
